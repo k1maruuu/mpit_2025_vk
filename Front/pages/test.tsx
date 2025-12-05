@@ -21,27 +21,99 @@ interface Question {
 
 const QUESTIONS: Question[] = [
   // Физическое состояние
-  { id: 1, text: "Я чувствую себя уставшим, когда встаю утром и должен идти на работу", domain: "physical" },
-  { id: 2, text: "Я испытываю физические симптомы, такие как головные боли или мышечное напряжение", domain: "physical" },
-  { id: 3, text: "Мне не хватает энергии для выполнения повседневных задач", domain: "physical" },
-  { id: 4, text: "Я замечаю, что мой сон стал беспокойным и не приносит отдыха", domain: "physical" },
+  {
+    id: 1,
+    text:
+      "Я чувствую себя уставшим, когда встаю утром и должен идти на работу",
+    domain: "physical",
+  },
+  {
+    id: 2,
+    text:
+      "Я испытываю физические симптомы, такие как головные боли или мышечное напряжение",
+    domain: "physical",
+  },
+  {
+    id: 3,
+    text: "Мне не хватает энергии для выполнения повседневных задач",
+    domain: "physical",
+  },
+  {
+    id: 4,
+    text:
+      "Я замечаю, что мой сон стал беспокойным и не приносит отдыха",
+    domain: "physical",
+  },
   // Эмоциональное состояние
-  { id: 5, text: "Я чувствую себя эмоционально вымотанным", domain: "emotional" },
-  { id: 6, text: "Я стал более раздражительным или вспыльчивым, чем обычно", domain: "emotional" },
-  { id: 7, text: "Я чувствую себя подавленным или грустным", domain: "emotional" },
-  { id: 8, text: "Я потерял интерес к вещам, которые раньше меня радовали", domain: "emotional" },
-  { id: 9, text: "Мне трудно расслабиться и отвлечься от работы", domain: "emotional" },
-  { id: 10, text: "Я постоянно беспокоюсь о будущем", domain: "emotional" },
+  {
+    id: 5,
+    text: "Я чувствую себя эмоционально вымотанным",
+    domain: "emotional",
+  },
+  {
+    id: 6,
+    text:
+      "Я стал более раздражительным или вспыльчивым, чем обычно",
+    domain: "emotional",
+  },
+  {
+    id: 7,
+    text: "Я чувствую себя подавленным или грустным",
+    domain: "emotional",
+  },
+  {
+    id: 8,
+    text:
+      "Я потерял интерес к вещам, которые раньше меня радовали",
+    domain: "emotional",
+  },
+  {
+    id: 9,
+    text: "Мне трудно расслабиться и отвлечься от работы",
+    domain: "emotional",
+  },
+  {
+    id: 10,
+    text: "Я постоянно беспокоюсь о будущем",
+    domain: "emotional",
+  },
   // Когнитивное состояние
-  { id: 11, text: "Мне трудно сосредоточиться на работе или других задачах", domain: "cognitive" },
-  { id: 12, text: "Я часто забываю важные вещи или детали", domain: "cognitive" },
-  { id: 13, text: "Мне сложно принимать решения", domain: "cognitive" },
-  { id: 14, text: "Я чувствую, что мой ум стал менее острым, чем раньше", domain: "cognitive" },
-  { id: 15, text: "Я чувствую себя перегруженным объемом работы", domain: "cognitive" },
-  { id: 16, text: "Я чувствую, что не справляюсь с требованиями своей работы", domain: "cognitive" },
+  {
+    id: 11,
+    text:
+      "Мне трудно сосредоточиться на работе или других задачах",
+    domain: "cognitive",
+  },
+  {
+    id: 12,
+    text: "Я часто забываю важные вещи или детали",
+    domain: "cognitive",
+  },
+  {
+    id: 13,
+    text:
+      "Мне сложно принимать решения, даже по несложным вопросам",
+    domain: "cognitive",
+  },
+  {
+    id: 14,
+    text:
+      "Я часто отвлекаюсь и не могу долго удерживать внимание",
+    domain: "cognitive",
+  },
+  {
+    id: 15,
+    text:
+      "Я ощущаю, что мои мыслительные способности ухудшились",
+    domain: "cognitive",
+  },
+  {
+    id: 16,
+    text:
+      "Мне трудно переключаться между задачами и планировать работу",
+    domain: "cognitive",
+  },
 ];
-
-const ANSWER_LABELS = ["Никогда", "Редко", "Иногда", "Часто", "Очень часто"];
 
 interface ResultScores {
   physical: number;
@@ -74,7 +146,9 @@ const TestPage: NextPage<TestPageProps> = ({ currentUser }) => {
   const router = useRouter();
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<(number | null)[]>(Array(QUESTIONS.length).fill(null));
+  const [answers, setAnswers] = useState<(number | null)[]>(
+    Array(QUESTIONS.length).fill(null)
+  );
 
   const [started, setStarted] = useState(false);
   const [finished, setFinished] = useState(false);
@@ -102,13 +176,19 @@ const TestPage: NextPage<TestPageProps> = ({ currentUser }) => {
     updated[currentIndex] = value;
     setAnswers(updated);
 
+    // если не последний вопрос — просто идём дальше
     if (currentIndex < QUESTIONS.length - 1) {
       setCurrentIndex((idx) => idx + 1);
       return;
     }
 
-    // Завершили тест
-    const physical = (updated[0] || 0) + (updated[1] || 0) + (updated[2] || 0) + (updated[3] || 0);
+    // --- Завершение теста, считаем баллы ---
+    const physical =
+      (updated[0] || 0) +
+      (updated[1] || 0) +
+      (updated[2] || 0) +
+      (updated[3] || 0);
+
     const emotional =
       (updated[4] || 0) +
       (updated[5] || 0) +
@@ -116,6 +196,7 @@ const TestPage: NextPage<TestPageProps> = ({ currentUser }) => {
       (updated[7] || 0) +
       (updated[8] || 0) +
       (updated[9] || 0);
+
     const cognitive =
       (updated[10] || 0) +
       (updated[11] || 0) +
@@ -123,13 +204,14 @@ const TestPage: NextPage<TestPageProps> = ({ currentUser }) => {
       (updated[13] || 0) +
       (updated[14] || 0) +
       (updated[15] || 0);
+
     const total = physical + emotional + cognitive;
 
     const result: ResultScores = { physical, emotional, cognitive, total };
     setScores(result);
     setFinished(true);
 
-    // сохраняем в БД
+    // сохраняем результаты
     try {
       setSaving(true);
       setError(null);
@@ -150,6 +232,11 @@ const TestPage: NextPage<TestPageProps> = ({ currentUser }) => {
     } finally {
       setSaving(false);
     }
+  };
+
+  const handlePrev = () => {
+    if (currentIndex === 0 || finished) return;
+    setCurrentIndex((idx) => idx - 1);
   };
 
   const handleExtraSubmit = async (skip: boolean) => {
@@ -177,19 +264,23 @@ const TestPage: NextPage<TestPageProps> = ({ currentUser }) => {
   };
 
   const currentQuestion = QUESTIONS[currentIndex];
-  const progress = Math.round(((currentIndex + 1) / QUESTIONS.length) * 100);
+  const progress = Math.round(
+    ((currentIndex + 1) / QUESTIONS.length) * 100
+  );
 
   return (
-    <div className="min-h-[calc(100vh-96px)] bg-[#F5F7F9] flex justify-center items-start pt-16 px-4">
-      <div className="w-full max-w-4xl bg-white rounded-[32px] shadow-sm p-10">
+    <div className="min-h-[calc(100vh-80px)] bg-[#F5F7FB] flex justify-center items-start pt-16 px-4">
+      <div className="w-full max-w-4xl bg-white rounded-[32px] shadow-sm p-8 sm:p-10">
         {/* Заголовок */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold mb-1">
-            Добрый день, {currentUser.full_name || currentUser.email_corporate}
+            Добрый день,{" "}
+            {currentUser.full_name || currentUser.email_corporate}
           </h1>
           {!started && !finished && (
             <p className="text-lg text-gray-600">
-              Давай пройдём короткий опрос, чтобы оценить уровень выгорания.
+              Давайте пройдём короткий опрос, чтобы оценить уровень
+              эмоционального выгорания.
             </p>
           )}
           {finished && scores && (
@@ -199,39 +290,116 @@ const TestPage: NextPage<TestPageProps> = ({ currentUser }) => {
           )}
         </div>
 
-        {/* Если тест завершён – блок с результатами */}
-        {finished && scores ? (
+        {!finished && (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-              <div className="rounded-2xl bg-[#F7F8FA] p-4">
-                <p className="text-sm text-gray-500 mb-1">Физическое состояние</p>
-                <p className="text-xl font-bold">
+            {/* Прогресс */}
+            <div className="mb-6">
+              <div className="flex justify-between text-xs text-gray-500 mb-1.5">
+                <span>
+                  Вопрос {currentIndex + 1} из {QUESTIONS.length}
+                </span>
+                <span>{progress}%</span>
+              </div>
+              <div className="w-full h-2 rounded-full bg-gray-100 overflow-hidden">
+                <div
+                  className="h-full bg-[#005EFF] rounded-full transition-all"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Вопрос */}
+            <div className="mb-6">
+              <p className="text-base font-medium text-gray-900 mb-4">
+                {currentQuestion.text}
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
+                {[
+                  { value: 0, label: "Никогда" },
+                  { value: 1, label: "Редко" },
+                  { value: 2, label: "Иногда" },
+                  { value: 3, label: "Часто" },
+                  { value: 4, label: "Очень часто" },
+                ].map((opt) => {
+                  const selected = answers[currentIndex] === opt.value;
+                  return (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => handleAnswer(opt.value)}
+                      className={`w-full px-3 py-2 rounded-full border text-xs sm:text-sm font-medium transition ${
+                        selected
+                          ? "bg-[#005EFF] border-[#005EFF] text-white shadow-sm"
+                          : "bg-white border-gray-200 text-gray-700 hover:border-[#005EFF33]"
+                      }`}
+                      disabled={saving}
+                    >
+                      {opt.label}
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="mt-3 text-xs text-gray-400">
+                0 – Никогда, 1 – Редко, 2 – Иногда, 3 – Часто, 4 – Очень
+                часто
+              </p>
+            </div>
+
+            {/* Навигация */}
+            <div className="flex justify-between items-center">
+              <button
+                type="button"
+                onClick={handlePrev}
+                disabled={currentIndex === 0}
+                className="px-4 py-2 rounded-full border border-gray-200 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-40 disabled:hover:bg-white"
+              >
+                Назад
+              </button>
+            </div>
+          </>
+        )}
+
+        {finished && scores && (
+          <div className="space-y-6">
+            {/* Основные результаты */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="rounded-2xl bg-[#F9FAFF] p-4 border border-[#E0E7FF]">
+                <p className="text-sm text-gray-500 mb-1">
+                  Физическое состояние
+                </p>
+                <p className="text-lg font-semibold">
                   {scores.physical} баллов{" "}
-                  <span className="text-sm font-semibold text-gray-500">
+                  <span className="text-sm font-medium text-gray-500">
                     ({getLevel("physical", scores.physical)})
                   </span>
                 </p>
               </div>
-              <div className="rounded-2xl bg-[#F7F8FA] p-4">
-                <p className="text-sm text-gray-500 mb-1">Эмоциональное состояние</p>
-                <p className="text-xl font-bold">
+              <div className="rounded-2xl bg-[#FFF7EB] p-4 border border-[#FED7AA]">
+                <p className="text-sm text-gray-500 mb-1">
+                  Эмоциональное состояние
+                </p>
+                <p className="text-lg font-semibold">
                   {scores.emotional} баллов{" "}
-                  <span className="text-sm font-semibold text-gray-500">
+                  <span className="text-sm font-medium text-gray-500">
                     ({getLevel("emotional", scores.emotional)})
                   </span>
                 </p>
               </div>
-              <div className="rounded-2xl bg-[#F7F8FA] p-4">
-                <p className="text-sm text-gray-500 mb-1">Когнитивное состояние</p>
-                <p className="text-xl font-bold">
+              <div className="rounded-2xl bg-[#ECFEFF] p-4 border border-[#A5F3FC]">
+                <p className="text-sm text-gray-500 mb-1">
+                  Когнитивное состояние
+                </p>
+                <p className="text-lg font-semibold">
                   {scores.cognitive} баллов{" "}
-                  <span className="text-sm font-semibold text-gray-500">
+                  <span className="text-sm font-medium text-gray-500">
                     ({getLevel("cognitive", scores.cognitive)})
                   </span>
                 </p>
               </div>
               <div className="rounded-2xl bg-[#E6FFF0] p-4 border border-[#00B33C]/30">
-                <p className="text-sm text-gray-500 mb-1">Общий уровень выгорания</p>
+                <p className="text-sm text-gray-500 mb-1">
+                  Общий уровень выгорания
+                </p>
                 <p className="text-xl font-bold">
                   {scores.total} баллов{" "}
                   <span className="text-sm font-semibold text-gray-500">
@@ -245,6 +413,7 @@ const TestPage: NextPage<TestPageProps> = ({ currentUser }) => {
               <p className="text-sm text-red-500 mb-4">{error}</p>
             )}
 
+            {/* Дополнительные вопросы */}
             {!showExtra ? (
               <div className="flex flex-col md:flex-row gap-3 justify-between">
                 <button
@@ -259,112 +428,67 @@ const TestPage: NextPage<TestPageProps> = ({ currentUser }) => {
                   type="button"
                   onClick={() => handleExtraSubmit(true)}
                   className="px-6 py-3 rounded-full bg-gray-100 text-gray-700 text-sm font-semibold hover:bg-gray-200 transition"
+                  disabled={saving}
                 >
-                  На главную
+                  Продолжить без комментариев
                 </button>
               </div>
             ) : (
-              <div className="mt-6 space-y-4">
+              <div className="space-y-4">
                 <div>
-                  <p className="text-sm font-semibold mb-2">
-                    1. Опишите в свободной форме, как вы чувствовали себя на работе
-                    в течение последних двух недель. Что было наиболее сложным или
-                    приятным?
+                  <p className="text-sm font-medium mb-1">
+                    1. Как вы оцениваете свою текущую рабочую нагрузку?
                   </p>
                   <textarea
-                    className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#00B33C]/40"
-                    rows={4}
+                    className="w-full min-h-[80px] rounded-2xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#005EFF]"
+                    placeholder="Опишите, что особенно нагружает вас в работе…"
                     value={extra1}
                     onChange={(e) => setExtra1(e.target.value)}
                   />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold mb-2">
-                    2. Какие факторы (события, ситуации, взаимодействия) оказали
-                    наибольшее влияние на ваше самочувствие в последнее время?
+                  <p className="text-sm font-medium mb-1">
+                    2. Какие факторы, на ваш взгляд, больше всего влияют на
+                    ваше состояние?
                   </p>
                   <textarea
-                    className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#00B33C]/40"
-                    rows={4}
+                    className="w-full min-h-[80px] rounded-2xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#005EFF]"
+                    placeholder="Например: переработки, конфликты, отсутствие отдыха…"
                     value={extra2}
                     onChange={(e) => setExtra2(e.target.value)}
                   />
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-3 justify-end mt-4">
+                <div className="flex flex-col md:flex-row gap-3 justify-between">
                   <button
                     type="button"
                     onClick={() => handleExtraSubmit(false)}
                     className="px-6 py-3 rounded-full bg-[#005EFF] text-white text-sm font-semibold hover:bg-[#0077FF] transition disabled:bg-gray-300"
                     disabled={saving}
                   >
-                    {saving ? "Сохраняем..." : "Сохранить и на главную"}
+                    Отправить ответы и перейти к дашборду
                   </button>
                   <button
                     type="button"
                     onClick={() => handleExtraSubmit(true)}
                     className="px-6 py-3 rounded-full bg-gray-100 text-gray-700 text-sm font-semibold hover:bg-gray-200 transition"
+                    disabled={saving}
                   >
-                    Пропустить и на главную
+                    Пропустить и перейти к дашборду
                   </button>
                 </div>
               </div>
             )}
-          </>
-        ) : (
-          <>
-            {/* Интерактивный тест, если ещё не завершён */}
-            <div className="mb-4 flex items-center justify-between">
-              <span className="text-sm text-gray-500">
-                Вопрос {currentIndex + 1} из {QUESTIONS.length}
-              </span>
-              <div className="flex-1 ml-4 h-2 bg-gray-100 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-[#0077FF] transition-all"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-            </div>
-
-            <div className="mb-6">
-              <div className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-5 text-base">
-                {currentQuestion.text}
-              </div>
-            </div>
-
-            <p className="text-sm text-gray-500 mb-3">Ответы</p>
-            <div className="flex flex-wrap gap-3 mb-4">
-              {ANSWER_LABELS.map((label, index) => {
-                const value = index; // 0..4
-                const selected = answers[currentIndex] === value;
-                return (
-                  <button
-                    key={label}
-                    type="button"
-                    onClick={() => handleAnswer(value)}
-                    className={[
-                      "px-5 py-2.5 rounded-full border text-sm font-medium transition",
-                      selected
-                        ? "bg-[#005EFF] border-[#005EFF] text-white"
-                        : "bg-white border-gray-200 text-gray-800 hover:bg-gray-50",
-                    ].join(" ")}
-                  >
-                    {label}
-                  </button>
-                );
-              })}
-            </div>
-
-            <p className="text-xs text-gray-400">
-              0 – Никогда, 1 – Редко, 2 – Иногда, 3 – Часто, 4 – Очень часто
-            </p>
-          </>
+          </div>
         )}
       </div>
     </div>
   );
 };
 
+export default TestPage;
+
+// ---- SSR ----
 export const getServerSideProps: GetServerSideProps<TestPageProps> = async (
   context
 ) => {
@@ -388,5 +512,3 @@ export const getServerSideProps: GetServerSideProps<TestPageProps> = async (
     };
   }
 };
-
-export default TestPage;

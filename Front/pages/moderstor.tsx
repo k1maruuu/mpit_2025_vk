@@ -100,13 +100,13 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
   };
 
   // ---- ГЛАВНАЯ ФУНКЦИЯ ЗАГРУЗКИ АНАЛИЗА ----
-  const fetchAnalysis = async () => {
+  const fetchAnalysis = async (forceRefresh: boolean = false) => {
     setLoading(true);
     setError(null);
     setAnalysis(null);
 
     try {
-      const body: { company?: string; city?: string } = {};
+      const body: { company?: string; city?: string; force_refresh?: boolean } = {};
       if (filterMode === "company" && company) body.company = company;
       if (filterMode === "city" && city) body.city = city;
 
@@ -116,6 +116,9 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
         );
         return;
       }
+
+      // флаг пересчёта — только когда жмём “Обновить данные”
+      body.force_refresh = forceRefresh;
 
       const res = await api.post<GroupBurnoutAnalysisResponse>(
         "/ai/analysis/group-analysis",
@@ -143,6 +146,7 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
     }
   };
 
+  // при смене фильтра берём кеш (forceRefresh = false)
   useEffect(() => {
     fetchAnalysis();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -218,6 +222,16 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
                 По городу
               </button>
             </div>
+
+            {/* Кнопка обновления анализа */}
+            <button
+              type="button"
+              onClick={() => fetchAnalysis(true)} // принудительный пересчёт
+              disabled={loading}
+              className="mt-1 inline-flex items-center px-3 py-1 rounded-full text-xs border border-[#00B33C] text-[#00B33C] hover:bg-[#00B33C] hover:text-white transition-colors disabled:opacity-50"
+            >
+              Обновить данные
+            </button>
           </div>
         </div>
 
@@ -447,7 +461,7 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
                 </div>
 
                 {/* Таблица сотрудников */}
-                <div className="rounded-2xl bg-white border border-gray-100 p-5">
+                {/* <div className="rounded-2xl bg-white border border-gray-100 p-5">
                   <div className="flex items-center justify-between mb-3">
                     <h2 className="text-lg font-semibold">
                       Сотрудники (срез по выгоранию)
@@ -518,7 +532,7 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
                     Данные носят ориентировочный характер и не заменяют
                     индивидуальные встречи с сотрудниками и работу HR.
                   </p>
-                </div>
+                </div> */}
               </>
             )}
           </>

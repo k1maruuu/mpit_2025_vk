@@ -12,6 +12,7 @@ services:
       - .:/app
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     environment:
+      - OLLAMA_NUM_THREADS=4
       - ENVIRONMENT=development
       - OLLAMA_HOST=http://ollama:11434
     networks:
@@ -38,6 +39,7 @@ services:
     volumes:
       - .:/app
     environment:
+      - OLLAMA_NUM_THREADS=4
       - OLLAMA_HOST=http://ollama:11434
     depends_on:
       - redis

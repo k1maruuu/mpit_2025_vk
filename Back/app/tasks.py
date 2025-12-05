@@ -24,6 +24,6 @@ def generate_email_for_employee(user: UserCreate):
         mail_generate = f"{first_initial}.{last_name}"
     else:
         mail_generate = str(translit(user.full_name, 'ru', reversed=True)).lower()
-    email = f"{mail_generate}@cdek.ru"
+    email = f"{mail_generate}@vk.u"
     logger.info(f"Удачная генерация почты: {email}")
     return email
