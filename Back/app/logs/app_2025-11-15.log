@@ -1,0 +1,93 @@
+2025-11-15 18:35:28,905 [INFO] app: Authentication attempt for email: qwerty@gmail.com
+2025-11-15 18:35:29,507 [INFO] app: User qwerty@gmail.com authenticated successfully
+2025-11-15 18:39:13,560 [INFO] app: Authentication attempt for email: qwerty@gmail.com
+2025-11-15 18:39:14,169 [INFO] app: User qwerty@gmail.com authenticated successfully
+2025-11-15 18:40:10,711 [INFO] app: Пользователь qwerty@gmail.com запросил самоанализ
+2025-11-15 18:40:10,711 [INFO] app: Генерация рекомендаций для пользователя 52
+2025-11-15 18:40:11,109 [ERROR] app: Ошибка в самоанализе: name 'datetime' is not defined
+2025-11-15 18:41:44,348 [INFO] app: Пользователь qwerty@gmail.com запросил самоанализ
+2025-11-15 18:41:44,349 [INFO] app: Генерация рекомендаций для пользователя 52
+2025-11-15 18:41:44,747 [ERROR] app: Ошибка в самоанализе: module 'datetime' has no attribute 'utcnow'
+2025-11-15 18:45:09,842 [INFO] app: Authentication attempt for email: qwerty@gmail.com
+2025-11-15 18:45:10,450 [INFO] app: User qwerty@gmail.com authenticated successfully
+2025-11-15 18:45:15,307 [INFO] app: Пользователь qwerty@gmail.com запросил самоанализ
+2025-11-15 18:45:15,307 [INFO] app: Генерация рекомендаций для пользователя 52
+2025-11-15 18:45:15,704 [ERROR] app: Ошибка в самоанализе: name 'datetime' is not defined
+2025-11-15 18:45:40,629 [INFO] app: Authentication attempt for email: qwerty@gmail.com
+2025-11-15 18:45:41,227 [INFO] app: User qwerty@gmail.com authenticated successfully
+2025-11-15 18:45:46,397 [INFO] app: Пользователь qwerty@gmail.com запросил самоанализ
+2025-11-15 18:45:46,397 [INFO] app: Генерация рекомендаций для пользователя 52
+2025-11-15 18:45:46,791 [ERROR] app: Ошибка в самоанализе: module 'datetime' has no attribute 'now'
+2025-11-15 18:47:41,473 [INFO] app: Пользователь qwerty@gmail.com запросил самоанализ
+2025-11-15 18:47:41,473 [INFO] app: Генерация рекомендаций для пользователя 52
+2025-11-15 18:47:41,890 [ERROR] app: Ошибка в самоанализе: name 'datetime' is not defined
+2025-11-15 18:48:12,786 [INFO] app: Пользователь qwerty@gmail.com запросил самоанализ
+2025-11-15 18:48:12,786 [INFO] app: Генерация рекомендаций для пользователя 52
+2025-11-15 18:48:13,200 [ERROR] app: Ошибка в самоанализе: name 'datetime' is not defined
+2025-11-15 18:49:44,635 [INFO] app: Пользователь qwerty@gmail.com запросил самоанализ
+2025-11-15 18:49:44,635 [INFO] app: Генерация рекомендаций для пользователя 52
+2025-11-15 18:49:45,016 [ERROR] app: Ошибка в самоанализе: name 'timezone' is not defined
+2025-11-15 18:50:18,037 [INFO] app: Пользователь qwerty@gmail.com запросил самоанализ
+2025-11-15 18:50:18,038 [INFO] app: Генерация рекомендаций для пользователя 52
+2025-11-15 18:50:36,939 [WARNING] app: У пользователя qwerty@gmail.com нет доступа
+2025-11-15 18:51:24,331 [INFO] app: Authentication attempt for email: admin@cdek.ru
+2025-11-15 18:51:24,938 [INFO] app: User admin@cdek.ru authenticated successfully
+2025-11-15 18:52:58,712 [INFO] app: Менеджер admin@cdek.ru запросил анализ для user_id=26
+2025-11-15 18:52:58,713 [INFO] app: Генерация рекомендаций для пользователя 26
+2025-11-15 18:52:59,117 [ERROR] app: Ошибка при генерации рекомендаций: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2025-11-15 18:52:59,117 [ERROR] app: Ошибка в анализе выгорания: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2025-11-15 18:53:10,404 [INFO] app: Менеджер admin@cdek.ru запросил анализ для user_id=26
+2025-11-15 18:53:10,404 [INFO] app: Генерация рекомендаций для пользователя 26
+2025-11-15 18:53:10,806 [ERROR] app: Ошибка при генерации рекомендаций: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2025-11-15 18:53:10,806 [ERROR] app: Ошибка в анализе выгорания: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2025-11-15 18:53:20,591 [INFO] app: Пользователь admin@cdek.ru запросил самоанализ
+2025-11-15 18:53:20,592 [INFO] app: Генерация рекомендаций для пользователя 1
+2025-11-15 18:53:30,393 [INFO] app: Менеджер admin@cdek.ru запросил анализ для user_id=28
+2025-11-15 18:53:30,393 [INFO] app: Генерация рекомендаций для пользователя 28
+2025-11-15 18:53:30,794 [ERROR] app: Ошибка при генерации рекомендаций: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2025-11-15 18:53:30,794 [ERROR] app: Ошибка в анализе выгорания: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2025-11-15 18:55:40,589 [INFO] app: User admin@cdek.ru is starting chat session
+2025-11-15 18:55:40,724 [INFO] app: Using existing session 8 for user 1
+2025-11-15 18:55:41,527 [INFO] app: Sending request to Ollama model 'gemma3:4b' with 3 messages
+2025-11-15 18:55:41,528 [ERROR] app: Ollama streaming error: [Errno 111] Connection refused
+2025-11-15 20:42:29,906 [INFO] app: Authentication attempt for email: qwerty@gmail.com
+2025-11-15 20:42:30,399 [WARNING] app: Authentication failed for qwerty@gmail.com: Incorrect password, attempts: 1
+2025-11-15 20:42:49,189 [INFO] app: Authentication attempt for email: qwerty@gmail.com
+2025-11-15 20:42:49,929 [INFO] app: User qwerty@gmail.com authenticated successfully
+2025-11-15 20:43:00,601 [INFO] app: Пользователь qwerty@gmail.com запросил самоанализ
+2025-11-15 20:43:00,602 [INFO] app: Генерация рекомендаций для пользователя 52
+2025-11-15 20:43:43,673 [INFO] app: Authentication attempt for email: user26@cdek.ru
+2025-11-15 20:43:44,270 [INFO] app: User user26@cdek.ru authenticated successfully
+2025-11-15 20:43:49,309 [INFO] app: Пользователь user26@cdek.ru запросил самоанализ
+2025-11-15 20:43:49,313 [INFO] app: Генерация рекомендаций для пользователя 26
+2025-11-15 20:43:53,735 [ERROR] app: Ошибка при генерации рекомендаций: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2025-11-15 20:43:53,736 [ERROR] app: Ошибка в самоанализе: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+2025-11-15 20:50:25,019 [INFO] app: Authentication attempt for email: user26@cdek.ru
+2025-11-15 20:50:25,657 [INFO] app: User user26@cdek.ru authenticated successfully
+2025-11-15 20:50:27,703 [INFO] app: User 26 requested 0 chat sessions
+2025-11-15 20:50:32,145 [INFO] app: User user26@cdek.ru is starting chat session
+2025-11-15 20:50:32,940 [INFO] app: Created new session 9 for user 26
+2025-11-15 20:50:33,726 [INFO] app: Sending request to Ollama model 'gemma3:4b' with 2 messages
+2025-11-15 20:50:37,729 [ERROR] app: Ollama streaming error: [Errno -5] No address associated with hostname
+2025-11-15 20:50:38,150 [INFO] app: User 26 requested 1 chat sessions
+2025-11-15 20:51:17,468 [INFO] app: Authentication attempt for email: user26@cdek.ru
+2025-11-15 20:51:17,933 [WARNING] app: Authentication failed for user26@cdek.ru: Incorrect password, attempts: 1
+2025-11-15 20:51:23,904 [INFO] app: Authentication attempt for email: user26@cdek.ru
+2025-11-15 20:51:24,599 [INFO] app: User user26@cdek.ru authenticated successfully
+2025-11-15 20:51:25,599 [INFO] app: User 26 requested 1 chat sessions
+2025-11-15 20:51:44,175 [INFO] app: User user26@cdek.ru is starting chat session
+2025-11-15 20:51:44,314 [INFO] app: Continuing existing session 9
+2025-11-15 20:51:45,104 [INFO] app: Sending request to Ollama model 'gemma3:4b' with 3 messages
+2025-11-15 20:51:49,106 [ERROR] app: Ollama streaming error: [Errno -5] No address associated with hostname
+2025-11-16 01:05:08,055 [INFO] app: Authentication attempt for email: admin@cdek.ru
+2025-11-16 01:05:10,448 [INFO] app: User admin@cdek.ru authenticated successfully
+2025-11-16 01:05:12,568 [INFO] app: Authentication attempt for email: admin@cdek.ru
+2025-11-16 01:05:13,625 [INFO] app: User admin@cdek.ru authenticated successfully
+2025-11-16 01:05:27,215 [INFO] app: Authentication attempt for email: user27@cdek.ru
+2025-11-16 01:05:28,779 [INFO] app: User user27@cdek.ru authenticated successfully
+2025-11-16 01:13:07,666 [INFO] app: User 27 requested 0 chat sessions
+2025-11-16 01:13:20,600 [INFO] app: User 27 created new session 10
+2025-11-16 01:13:21,360 [INFO] app: User 27 requested 1 chat sessions
+2025-11-16 01:16:48,060 [INFO] app: User 27 requested 1 chat sessions
+2025-11-16 01:17:01,945 [INFO] app: User 27 requested 1 chat sessions
+2025-11-16 01:17:02,536 [INFO] app: User 27 requested 1 chat sessions

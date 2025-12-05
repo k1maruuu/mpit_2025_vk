@@ -1,0 +1,272 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #F6F6F6;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #F6F6F6;
+  }
+}
+@font-face {
+	font-family: 'VKSansDisplay-Bold';
+	src: url('../fonts/vksansdisplay-bold.eot'); /* IE 9 Compatibility Mode */
+	src: url('../fonts/vksansdisplay-bold.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
+		url('../fonts/vksansdisplay-bold.woff2') format('woff2'), /* Super Modern Browsers */
+		url('../fonts/vksansdisplay-bold.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
+		url('../fonts/vksansdisplay-bold.ttf') format('truetype'), /* Safari, Android, iOS */
+		url('../fonts/vksansdisplay-bold.svg#vksansdisplay-bold') format('svg'); /* Chrome < 4, Legacy iOS */
+}
+body {
+  color: var(--foreground);
+  background: var(--background);
+  
+}
+
+.log {
+  background-image: url(../src/Group3.png);
+  background-size: contain;
+}
+
+.hed {
+  background-image: url(../src/Group31.png);
+  background-size: cover;
+}
+
+.fi {
+  background-image: url(../public/Mask\ group-1.png);
+  background-size: cover;
+}
+
+.fi2 {
+  background-image: url(../public/Mask\ group-2.png);
+  background-size: cover;
+}
+
+.fi3 {
+  background-image: url(../public/Mask\ group-3.png);
+  background-size: cover;
+}
+
+.fi4 {
+  background-image: url(../public/Mask\ group.png);
+  background-size: cover;
+}
+
+.fi6 {
+  background-image: url(../public/image44.png);
+  background-size: cover;
+}
+
+.fi7 {
+  background-image: url(../public/Group35.png);
+  background-size: cover;
+}
+
+.fi8 {
+  background-image: url(../public/photo.png);
+  background-size: cover;
+}
+
+.fi9 {
+  background-image: url(../public/w22.png);
+  background-size: cover;
+}
+
+.fi10 {
+  background-image: url(../public/Za.png);
+  background-size: cover;
+}
+
+.fi11 {
+  background-image: url(../public/Zy.png);
+  background-size: cover;
+}
+
+.fi12 {
+  background-image: url(../public/Bl.png);
+  background-size: cover;
+}
+
+.fi13 {
+  background-image: url(../public/Sz.png);
+  background-size: cover;
+}
+
+.diagonal-gradient {
+  background: linear-gradient(-45deg, #8B0C0E, #3314F1);
+}
+
+.animate-breathe-up-down {
+  animation: breatheUpDown 10s infinite ease-in-out;
+}
+
+.animate-breathe-diagonal-ur-dl {
+  animation: breatheDiagonalURDL 10s infinite ease-in-out;
+}
+
+.animate-breathe-diagonal-ul-dr {
+  animation: breatheDiagonalULDR 10s infinite ease-in-out;
+}
+
+.delay-0 {
+  animation-delay: 0s;
+}
+
+.delay-2 {
+  animation-delay: 2s;
+}
+
+.delay-4 {
+  animation-delay: 4s;
+}
+
+.delay-6 {
+  animation-delay: 6s;
+}
+
+@keyframes breatheUpDown {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-60px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes breatheDiagonalURDL {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(30px, -40px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes breatheDiagonalULDR {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(-40px, -40px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@media (width >=1900px) {
+  .container {
+    max-width: 1700px;
+  }
+}
+
+@media (width >=2000px) {
+  .container {
+    max-width: 1800px;
+  }
+}
+
+@media (width >=2400px) {
+  .container {
+    max-width: 2200px;
+  }
+}
+
+@media (width >=1900px) {
+  .container2 {
+    max-width: 1300px;
+  }
+}
+
+@media (width >=2000px) {
+  .container2 {
+    max-width: 1400px;
+  }
+}
+
+@media (width >=2400px) {
+  .container2 {
+    max-width: 1800px;
+  }
+}
+
+
+
+
+@media (width >=900px) {
+  .container2 {
+    max-width: 1300px;
+  }
+}
+
+
+
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 28rem;
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  color: #6b7280;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #374151;
+}
+
+/* Focus styles for inputs (corrected Tailwind syntax) */
+.focus\:border-purple-500:focus {
+  border-color: #9333EA;
+  /* Darker purple for focus */
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.5);
+  /* Purple focus ring */
+}
+
+.border-purple-300 {
+  border-color: #A78BFA;
+  /* Light purple for borders */
+}

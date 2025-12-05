@@ -1,0 +1,57 @@
+2025-11-16 01:27:33,024 [INFO] app: User 27 requested 1 chat sessions
+2025-11-16 01:38:18,400 [INFO] app: Authentication attempt for email: admin@cdek.ru
+2025-11-16 01:38:19,470 [INFO] app: User admin@cdek.ru authenticated successfully
+2025-11-16 01:38:27,012 [INFO] app: Authentication attempt for email: user26@cdek.ru
+2025-11-16 01:38:27,509 [INFO] app: User user26@cdek.ru authenticated successfully
+2025-11-16 01:38:31,437 [INFO] app: User 26 requested 1 chat sessions
+2025-11-16 01:38:31,879 [INFO] app: User 26 requested 1 chat sessions
+2025-11-16 01:38:41,865 [INFO] app: User user26@cdek.ru is starting chat session
+2025-11-16 01:38:42,083 [INFO] app: Continuing existing session 9
+2025-11-16 01:38:42,914 [INFO] app: Sending request to Ollama model 'gemma3:4b' with 6 messages
+2025-11-16 01:41:02,424 [INFO] app: Saved assistant message to session 9
+2025-11-16 01:41:31,281 [INFO] app: User 26 created new session 11
+2025-11-16 01:41:31,974 [INFO] app: User 26 requested 2 chat sessions
+2025-11-16 01:49:16,108 [INFO] app: User 26 requested 2 chat sessions
+2025-11-16 01:49:16,700 [INFO] app: User 26 requested 2 chat sessions
+2025-11-16 01:51:59,373 [INFO] app: User 26 requested 2 chat sessions
+2025-11-16 01:52:00,222 [INFO] app: User 26 requested 2 chat sessions
+2025-11-16 02:22:49,902 [INFO] app: Authentication attempt for email: admin@cdek.ru
+2025-11-16 02:22:50,729 [INFO] app: User admin@cdek.ru authenticated successfully
+2025-11-16 02:24:15,920 [INFO] app: Authentication attempt for email: user20@cdek.ru
+2025-11-16 02:24:16,680 [INFO] app: User user20@cdek.ru authenticated successfully
+2025-11-16 02:26:33,190 [INFO] app: Пользователь user20@cdek.ru запросил групповой анализ: company=филиал, city=None
+2025-11-16 02:26:33,190 [INFO] app: Пользователь user20@cdek.ru запросил групповой анализ: company=филиал, city=None
+2025-11-16 02:26:33,191 [INFO] app: Генерация группового анализа: company=филиал, city=None
+2025-11-16 02:26:33,191 [INFO] app: Генерация группового анализа: company=филиал, city=None
+2025-11-16 02:49:22,422 [INFO] app: Пользователь user20@cdek.ru запросил групповой анализ: company=филиал, city=None
+2025-11-16 02:49:22,423 [INFO] app: Генерация группового анализа: company=филиал, city=None
+2025-11-16 02:49:22,493 [INFO] app: Пользователь user20@cdek.ru запросил групповой анализ: company=филиал, city=None
+2025-11-16 02:49:22,494 [INFO] app: Генерация группового анализа: company=филиал, city=None
+2025-11-16 03:16:30,144 [INFO] app: Warming up LLM model on startup...
+2025-11-16 03:18:01,376 [INFO] app: Warmup finished successfully
+2025-11-16 03:19:40,367 [INFO] app: Authentication attempt for email: admin@cdek.ru
+2025-11-16 03:19:41,222 [INFO] app: User admin@cdek.ru authenticated successfully
+2025-11-16 03:27:51,560 [INFO] app: Authentication attempt for email: user20@cdek.ru
+2025-11-16 03:27:52,153 [INFO] app: User user20@cdek.ru authenticated successfully
+2025-11-16 03:27:57,451 [INFO] app: Пользователь user20@cdek.ru запросил групповой анализ: company=филиал, city=None
+2025-11-16 03:27:57,452 [INFO] app: Пользователь user20@cdek.ru запросил групповой анализ: company=филиал, city=None
+2025-11-16 03:27:57,453 [INFO] app: Генерация группового анализа: company=филиал, city=None
+2025-11-16 03:27:57,454 [INFO] app: Генерация группового анализа: company=филиал, city=None
+2025-11-16 03:42:16,313 [INFO] app: Warming up LLM model on startup...
+2025-11-16 03:43:57,924 [INFO] app: Warmup finished successfully
+2025-11-16 03:45:56,277 [INFO] app: Пользователь user20@cdek.ru запросил групповой анализ: company=филиал, city=None
+2025-11-16 03:45:56,278 [INFO] app: Генерация группового анализа: company=филиал, city=None
+2025-11-16 03:45:57,211 [INFO] app: Пользователь user20@cdek.ru запросил групповой анализ: company=филиал, city=None
+2025-11-16 03:45:57,212 [INFO] app: Генерация группового анализа: company=филиал, city=None
+2025-11-16 03:49:18,395 [INFO] app: Групповой анализ сгенерирован для company=филиал, сотрудников: 39
+2025-11-16 03:50:49,917 [INFO] app: Authentication attempt for email: user27@cdek.ru
+2025-11-16 03:50:50,751 [INFO] app: User user27@cdek.ru authenticated successfully
+2025-11-16 03:52:41,304 [INFO] app: User 27 requested 1 chat sessions
+2025-11-16 03:52:41,905 [INFO] app: User 27 requested 1 chat sessions
+2025-11-16 03:52:46,835 [INFO] app: Групповой анализ сгенерирован для company=филиал, сотрудников: 39
+2025-11-16 03:52:56,487 [INFO] app: User user27@cdek.ru is starting chat session
+2025-11-16 03:52:56,705 [INFO] app: Continuing existing session 10
+2025-11-16 03:52:57,562 [INFO] app: Sending request to Ollama model 'gemma3:4b' with 2 messages
+2025-11-16 03:53:15,783 [INFO] app: Saved assistant message to session 10
+2025-11-16 03:53:20,666 [INFO] app: User 27 created new session 12
+2025-11-16 03:53:21,274 [INFO] app: User 27 requested 2 chat sessions

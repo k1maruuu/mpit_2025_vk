@@ -1,0 +1,9 @@
+@font-face {
+	font-family: 'VKSansDisplay-Bold';
+	src: url('../fonts/vksansdisplay-bold.eot'); /* IE 9 Compatibility Mode */
+	src: url('../fonts/vksansdisplay-bold.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
+		url('../fonts/vksansdisplay-bold.woff2') format('woff2'), /* Super Modern Browsers */
+		url('../fonts/vksansdisplay-bold.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
+		url('../fonts/vksansdisplay-bold.ttf') format('truetype'), /* Safari, Android, iOS */
+		url('../fonts/vksansdisplay-bold.svg#vksansdisplay-bold') format('svg'); /* Chrome < 4, Legacy iOS */
+}
