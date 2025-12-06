@@ -6,8 +6,6 @@ import api from "../lib/api";
 import { isAuthenticated } from "../lib/auth";
 import { User, UserRole } from "../lib/types";
 
-// ==== Типы под ответы бэка ====
-
 type RecommendationCategory =
   | "workload"
   | "rest"
@@ -62,6 +60,25 @@ interface ModeratorPageProps {
 
 type FilterMode = "company" | "city";
 
+type ErrorWithCode = {
+  code?: string;
+  response?: {
+    data?: {
+      detail?: string;
+    };
+  };
+};
+
+const isErrorWithCode = (e: unknown): e is ErrorWithCode => {
+  if (typeof e !== "object" || e === null) return false;
+  return "code" in e || "response" in e;
+};
+
+type UserWithOrgFields = User & {
+  company?: string | null;
+  city?: string | null;
+};
+
 const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
   const [filterMode, setFilterMode] = useState<FilterMode>("company");
   const [loading, setLoading] = useState(false);
@@ -69,44 +86,26 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
     useState<GroupBurnoutAnalysisResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const company = (currentUser as any).company ?? null;
-  const city = (currentUser as any).city ?? null;
-
-  const getBurnoutBadge = (score: number | null) => {
-    if (score == null) {
-      return { label: "нет данных", className: "bg-gray-100 text-gray-600" };
-    }
-    if (score <= 25) {
-      return { label: "низкий риск", className: "bg-green-100 text-green-700" };
-    }
-    if (score <= 40) {
-      return {
-        label: "умеренный риск",
-        className: "bg-yellow-100 text-yellow-700",
-      };
-    }
-    if (score <= 55) {
-      return {
-        label: "высокий риск",
-        className: "bg-orange-100 text-orange-700",
-      };
-    }
-    return { label: "критический риск", className: "bg-red-100 text-red-700" };
-  };
+  const orgUser = currentUser as UserWithOrgFields;
+  const company = orgUser.company ?? null;
+  const city = orgUser.city ?? null;
 
   const formatNumber = (value: number | null, digits = 1) => {
     if (value == null) return "нет данных";
     return value.toFixed(digits).replace(".", ",");
   };
 
-  // ---- ГЛАВНАЯ ФУНКЦИЯ ЗАГРУЗКИ АНАЛИЗА ----
   const fetchAnalysis = async (forceRefresh: boolean = false) => {
     setLoading(true);
     setError(null);
     setAnalysis(null);
 
     try {
-      const body: { company?: string; city?: string; force_refresh?: boolean } = {};
+      const body: {
+        company?: string;
+        city?: string;
+        force_refresh?: boolean;
+      } = {};
       if (filterMode === "company" && company) body.company = company;
       if (filterMode === "city" && city) body.city = city;
 
@@ -117,27 +116,25 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
         return;
       }
 
-      // флаг пересчёта — только когда жмём “Обновить данные”
       body.force_refresh = forceRefresh;
 
       const res = await api.post<GroupBurnoutAnalysisResponse>(
         "/ai/analysis/group-analysis",
         body,
-        { timeout: 1000000 } // увеличенный таймаут для LLM
+        { timeout: 1000000 }
       );
 
       setAnalysis(res.data);
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error("Ошибка загрузки группового анализа", e);
 
-      // если это таймаут axios
-      if (e?.code === "ECONNABORTED") {
+      if (isErrorWithCode(e) && e.code === "ECONNABORTED") {
         setError(
           "Ответ от модели занимает слишком много времени. Попробуйте ещё раз позже."
         );
       } else {
         const msg =
-          e?.response?.data?.detail ||
+          (isErrorWithCode(e) && e.response?.data?.detail) ||
           "Не удалось загрузить групповой анализ. Проверьте права доступа и попробуйте позже.";
         setError(msg);
       }
@@ -146,7 +143,6 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
     }
   };
 
-  // при смене фильтра берём кеш (forceRefresh = false)
   useEffect(() => {
     fetchAnalysis();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -163,28 +159,26 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
       : "Сотрудник";
 
   return (
-    <div className="min-h-[70vh] bg-[#F5F7FB] flex justify-center items-start pt-20 px-4">
-      <div className="w-full max-w-6xl bg-white rounded-[24px] shadow-sm p-6 mt-6 flex flex-col gap-6">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div className="min-h-[calc(100vh-80px)] bg-[#F5F7FB] flex justify-center items-start pt-16 px-4">
+      <div className="w-full max-w-6xl bg-white rounded-[32px] shadow-sm border border-[#E5E7F0] p-6 md:p-8 mt-4 flex flex-col gap-6">
+        {/* HEADER */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
           <div>
-            <h1 className="text-2xl font-bold">
-              Панель модератора по выгоранию
-            </h1>
-            <p className="text-sm text-gray-500 mt-1">
-              Обзор эмоционального состояния сотрудников{" "}
-              {filterMode === "company" && company && (
-                <span className="font-semibold">компании {company}</span>
-              )}
-              {filterMode === "city" && city && (
-                <span className="font-semibold">в городе {city}</span>
-              )}
-              .
+            <p className="text-xs uppercase tracking-wide text-[#005EFF] mb-1">
+              панель модератора
             </p>
-            <p className="text-xs text-gray-400 mt-1">
+            <h1 className="text-2xl md:text-3xl font-semibold text-[#111827]">
+              Аналитика выгорания в команде
+            </h1>
+            <p className="text-sm text-gray-600 mt-2 max-w-xl">
+              Здесь вы видите агрегированные данные по выгоранию сотрудников
+              вашей компании или города. Данные помогают не «искать виноватых», а
+              планировать системные меры поддержки.
+            </p>
+            <p className="text-xs text-gray-400 mt-2">
               Вы вошли как{" "}
-              <span className="font-semibold">{currentUser.full_name}</span> (
-              {roleLabel}) —{" "}
+              <span className="font-semibold">{currentUser.full_name}</span>{" "}
+              ({roleLabel}) —{" "}
               {currentUser.position_employee || "должность не указана"}.
             </p>
           </div>
@@ -199,10 +193,10 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
                 type="button"
                 onClick={() => setFilterMode("company")}
                 className={[
-                  "px-3 py-1 rounded-full",
+                  "px-3 py-1 rounded-full transition-colors",
                   filterMode === "company"
-                    ? "bg-[#00B33C] text-white"
-                    : "text-gray-600",
+                    ? "bg-[#005EFF] text-white"
+                    : "text-gray-600 hover:text-gray-900",
                 ].join(" ")}
                 disabled={!company}
               >
@@ -212,10 +206,10 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
                 type="button"
                 onClick={() => setFilterMode("city")}
                 className={[
-                  "px-3 py-1 rounded-full",
+                  "px-3 py-1 rounded-full transition-colors",
                   filterMode === "city"
-                    ? "bg-[#00B33C] text-white"
-                    : "text-gray-600",
+                    ? "bg-[#005EFF] text-white"
+                    : "text-gray-600 hover:text-gray-900",
                 ].join(" ")}
                 disabled={!city}
               >
@@ -223,14 +217,13 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
               </button>
             </div>
 
-            {/* Кнопка обновления анализа */}
             <button
               type="button"
-              onClick={() => fetchAnalysis(true)} // принудительный пересчёт
+              onClick={() => fetchAnalysis(true)}
               disabled={loading}
-              className="mt-1 inline-flex items-center px-3 py-1 rounded-full text-xs border border-[#00B33C] text-[#00B33C] hover:bg-[#00B33C] hover:text-white transition-colors disabled:opacity-50"
+              className="mt-1 inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs border border-[#00B33C] text-[#00B33C] hover:bg-[#00B33C] hover:text-white transition-colors disabled:opacity-50"
             >
-              Обновить данные
+              <span>Обновить данные</span>
             </button>
           </div>
         </div>
@@ -261,9 +254,9 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
 
             {!loading && analysis && (
               <>
-                {/* Верхние KPI */}
+                {/* KPI */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="rounded-2xl bg-[#F8FAFC] p-4">
+                  <div className="rounded-2xl bg-[#F8FAFC] border border-gray-100 p-4">
                     <p className="text-xs text-gray-500 mb-1">
                       Всего сотрудников
                     </p>
@@ -278,7 +271,7 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
                     </p>
                   </div>
 
-                  <div className="rounded-2xl bg-[#F8FAFC] p-4">
+                  <div className="rounded-2xl bg-[#F8FAFC] border border-gray-100 p-4">
                     <p className="text-xs text-gray-500 mb-1">
                       Средний балл выгорания
                     </p>
@@ -295,7 +288,7 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
                     </p>
                   </div>
 
-                  <div className="rounded-2xl bg-[#F8FAFC] p-4">
+                  <div className="rounded-2xl bg-[#F8FAFC] border border-gray-100 p-4">
                     <p className="text-xs text-gray-500 mb-1">
                       Средний стаж (лет)
                     </p>
@@ -315,7 +308,7 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
                     </p>
                   </div>
 
-                  <div className="rounded-2xl bg-[#F8FAFC] p-4">
+                  <div className="rounded-2xl bg-[#F8FAFC] border border-gray-100 p-4">
                     <p className="text-xs text-gray-500 mb-1">
                       Анализ обновлён
                     </p>
@@ -367,11 +360,11 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
 
                 {/* Summary + приоритеты */}
                 <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1.1fr] gap-6">
-                  <div className="rounded-2xl bg-white border border-gray-100 p-5">
+                  <div className="rounded-2xl bg-[#F9FAFB] border border-gray-100 p-5">
                     <h2 className="text-lg font-semibold mb-2">
                       Итог по группе
                     </h2>
-                    <p className="text-sm text-gray-800 whitespace-pre-wrap">
+                    <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">
                       {analysis.summary}
                     </p>
 
@@ -384,7 +377,7 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
                           {analysis.key_trends.map((t, idx) => (
                             <span
                               key={idx}
-                              className="text-xs px-3 py-1 rounded-full bg-[#F3F4F6] text-gray-700"
+                              className="text-xs px-3 py-1 rounded-full bg-[#EFF4FF] text-[#1D3BBF]"
                             >
                               {t}
                             </span>
@@ -394,7 +387,7 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
                     )}
                   </div>
 
-                  <div className="rounded-2xl bg-white border border-gray-100 p-5 flex flex-col">
+                  <div className="rounded-2xl bg-[#F9FAFB] border border-gray-100 p-5 flex flex-col">
                     <h2 className="text-lg font-semibold mb-2">
                       Приоритетные шаги
                     </h2>
@@ -412,11 +405,22 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
                   </div>
                 </div>
 
-                {/* Рекомендации */}
-                <div className="rounded-2xl bg-[#F8FAFC] border border-gray-100 p-5">
-                  <h2 className="text-lg font-semibold mb-4">
-                    Рекомендации для компании
-                  </h2>
+                {/* Рекомендации для компании */}
+                <div className="rounded-2xl bg-white border border-gray-100 p-5">
+                  <div className="flex items-center justify-between mb-3">
+                    <div>
+                      <h2 className="text-lg font-semibold">
+                        Рекомендации для компании
+                      </h2>
+                      <p className="text-xs text-gray-500 mt-1 max-w-xl">
+                        Подборка шагов, которые можно использовать как основу
+                        для программы профилактики выгорания.
+                      </p>
+                    </div>
+                    <span className="hidden md:inline-flex text-[11px] text-gray-400">
+                      Сформировано на основе последних тестов
+                    </span>
+                  </div>
 
                   {analysis.recommendations.length === 0 && (
                     <p className="text-sm text-gray-500">
@@ -424,11 +428,11 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
                     </p>
                   )}
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mt-3">
                     {analysis.recommendations.map((rec, idx) => (
                       <div
                         key={idx}
-                        className="rounded-2xl bg-white border border-gray-100 p-4 flex flex-col gap-2"
+                        className="rounded-2xl bg-[#F9FAFB] border border-gray-100 p-4 flex flex-col gap-2"
                       >
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-semibold uppercase text-gray-500">
@@ -447,9 +451,11 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
                             приоритет: {rec.priority}
                           </span>
                         </div>
-                        <p className="text-gray-800">{rec.text}</p>
+                        <p className="text-gray-800 leading-snug">
+                          {rec.text}
+                        </p>
                         {rec.action_items?.length > 0 && (
-                          <ul className="list-disc list-inside text-xs text-gray-600 space-y-1">
+                          <ul className="list-disc list-inside text-xs text-gray-600 space-y-1 mt-1">
                             {rec.action_items.map((item, i) => (
                               <li key={i}>{item}</li>
                             ))}
@@ -459,80 +465,6 @@ const ModeratorPage: React.FC<ModeratorPageProps> = ({ currentUser }) => {
                     ))}
                   </div>
                 </div>
-
-                {/* Таблица сотрудников */}
-                {/* <div className="rounded-2xl bg-white border border-gray-100 p-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <h2 className="text-lg font-semibold">
-                      Сотрудники (срез по выгоранию)
-                    </h2>
-                    <p className="text-xs text-gray-400">
-                      Показаны первые {analysis.employee_breakdown.length}{" "}
-                      сотрудников
-                    </p>
-                  </div>
-
-                  <div className="w-full overflow-x-auto">
-                    <table className="min-w-full text-xs md:text-sm border-collapse">
-                      <thead>
-                        <tr className="text-left text-gray-500 border-b border-gray-100">
-                          <th className="py-2 pr-3">ФИО</th>
-                          <th className="py-2 pr-3">Должность</th>
-                          <th className="py-2 pr-3">Балл выгорания</th>
-                          <th className="py-2 pr-3">Риск</th>
-                          <th className="py-2 pr-3 hidden sm:table-cell">
-                            Стаж (лет)
-                          </th>
-                          <th className="py-2 pr-3 hidden md:table-cell">
-                            Дней без отпуска
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {analysis.employee_breakdown.map((emp) => {
-                          const badge = getBurnoutBadge(emp.burnout_score);
-                          return (
-                            <tr
-                              key={emp.user_id}
-                              className="border-b border-gray-50"
-                            >
-                              <td className="py-2 pr-3 whitespace-nowrap">
-                                {emp.full_name}
-                              </td>
-                              <td className="py-2 pr-3 whitespace-nowrap text-gray-600">
-                                {emp.position || "—"}
-                              </td>
-                              <td className="py-2 pr-3">
-                                {emp.burnout_score ?? "—"}
-                              </td>
-                              <td className="py-2 pr-3">
-                                <span
-                                  className={[
-                                    "inline-flex items-center px-2 py-0.5 rounded-full text-[11px]",
-                                    badge.className,
-                                  ].join(" ")}
-                                >
-                                  {badge.label}
-                                </span>
-                              </td>
-                              <td className="py-2 pr-3 hidden sm:table-cell">
-                                {emp.work_experience ?? "—"}
-                              </td>
-                              <td className="py-2 pr-3 hidden md:table-cell">
-                                {emp.vacation_gap_days ?? "—"}
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <p className="mt-2 text-[10px] text-gray-400">
-                    Данные носят ориентировочный характер и не заменяют
-                    индивидуальные встречи с сотрудниками и работу HR.
-                  </p>
-                </div> */}
               </>
             )}
           </>

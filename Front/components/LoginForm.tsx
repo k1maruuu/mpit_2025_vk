@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { login, isAuthenticated } from "../lib/auth";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -33,7 +34,7 @@ const LoginForm: React.FC = () => {
       return;
     }
 
-    // успешнлогиный 
+    // успешный логин
     setAttempts(0);
     await router.push("/dashboard");
   };
@@ -49,10 +50,12 @@ const LoginForm: React.FC = () => {
       <div className="w-full max-w-5xl flex bg-white rounded-3xl shadow-2xl overflow-hidden">
         {/* Левая панель с картинкой */}
         <div className="hidden md:flex w-1/2 relative">
-          <img
+          <Image
             src="/bg1.png"
             alt="Background"
-            className="absolute inset-0 w-full h-full object-cover"
+            fill
+            className="object-cover"
+            priority
           />
 
           {/* затемнение для читаемости текста */}
@@ -60,7 +63,9 @@ const LoginForm: React.FC = () => {
 
           <div className="relative z-10 text-white p-10 flex flex-col justify-between">
             <div>
-              <h2 className="text-3xl font-bold mb-3 drop-shadow-md">VK-Tracker</h2>
+              <h2 className="text-3xl font-bold mb-3 drop-shadow-md">
+                VK-Tracker
+              </h2>
               <p className="text-sm text-white/90 max-w-xs drop-shadow-sm">
                 Платформа для отслеживания эмоционального состояния сотрудников
                 и снижения выгорания в команде.
@@ -81,7 +86,6 @@ const LoginForm: React.FC = () => {
             </div>
           </div>
         </div>
-
 
         {/* Правая часть — форма логина */}
         <div className="w-full md:w-1/2 p-8 md:p-12 flex items-center justify-center">

@@ -35,10 +35,8 @@ const Header: React.FC<HeaderProps> = ({ currentUser }) => {
   const goRecs = () =>
     currentUser.role === "user" && router.push("/notifications");
   const goCreateUser = () =>
-    currentUser.role === "admin" && router.push("/moderstor");
-  const goCreateUser2 = () =>
-    currentUser.role === "manager" && router.push("/moderstor");
-  const goCommunity = () => router.push("/");
+    (currentUser.role === "admin" || currentUser.role === "manager") &&
+    router.push("/moderstor");
   const goHome = () => router.push("/news");
 
   const handleLogout = () => {
@@ -127,19 +125,63 @@ const Header: React.FC<HeaderProps> = ({ currentUser }) => {
             )}
 
             {currentUser.role === "admin" && (
-              <NavItem
-                text="Дэшборд"
-                onClick={goCreateUser}
-                active={isRouteActive("/mail")}
-              />
+              <>
+                <NavItem
+                  text="Дэшборд"
+                  onClick={goCreateUser}
+                  active={isRouteActive("/mail")}
+                />
+                <NavItem
+                  text="Чат-бот"
+                  onClick={goChatBot}
+                  active={isRouteActive("/dock")}
+                />
+                <NavItem
+                  text="Дневник"
+                  onClick={goDiary}
+                  active={isRouteActive("/dashboard")}
+                />
+                <NavItem
+                  text="Рекомендации"
+                  onClick={goRecs}
+                  active={isRouteActive("/notifications")}
+                />
+                <NavItem
+                  text="Опрос"
+                  onClick={goTest}
+                  active={isRouteActive("/test")}
+                />
+              </>
             )}
 
             {currentUser.role === "manager" && (
-              <NavItem
-                text="Дэшборд"
-                onClick={goCreateUser2}
-                active={isRouteActive("/mail")}
-              />
+              <>
+                <NavItem
+                  text="Дэшборд"
+                  onClick={goCreateUser}
+                  active={isRouteActive("/mail")}
+                />
+                <NavItem
+                  text="Чат-бот"
+                  onClick={goChatBot}
+                  active={isRouteActive("/dock")}
+                />
+                <NavItem
+                  text="Дневник"
+                  onClick={goDiary}
+                  active={isRouteActive("/dashboard")}
+                />
+                <NavItem
+                  text="Рекомендации"
+                  onClick={goRecs}
+                  active={isRouteActive("/notifications")}
+                />
+                <NavItem
+                  text="Опрос"
+                  onClick={goTest}
+                  active={isRouteActive("/test")}
+                />
+              </>
             )}
           </nav>
         </div>
@@ -227,21 +269,48 @@ const Header: React.FC<HeaderProps> = ({ currentUser }) => {
               <>
                 <button
                   onClick={() => {
-                    goDashboard();
-                    setIsMenuOpen(false);
-                  }}
-                  className={`text-left py-1 ${isActive("/dashboard")}`}
-                >
-                  Дэшборд
-                </button>
-                <button
-                  onClick={() => {
                     goCreateUser();
                     setIsMenuOpen(false);
                   }}
                   className={`text-left py-1 ${isActive("/mail")}`}
                 >
-                  Создать аккаунт сотрудника
+                  Дэшборд
+                </button>
+                <button
+                  onClick={() => {
+                    goChatBot();
+                    setIsMenuOpen(false);
+                  }}
+                  className={`text-left py-1 ${isActive("/dock")}`}
+                >
+                  Чат-бот
+                </button>
+                <button
+                  onClick={() => {
+                    goDiary();
+                    setIsMenuOpen(false);
+                  }}
+                  className={`text-left py-1 ${isActive("/dashboard")}`}
+                >
+                  Дневник
+                </button>
+                <button
+                  onClick={() => {
+                    goRecs();
+                    setIsMenuOpen(false);
+                  }}
+                  className={`text-left py-1 ${isActive("/notifications")}`}
+                >
+                  Рекомендации
+                </button>
+                <button
+                  onClick={() => {
+                    goTest();
+                    setIsMenuOpen(false);
+                  }}
+                  className={`text-left py-1 ${isActive("/test")}`}
+                >
+                  Опрос
                 </button>
               </>
             )}
@@ -250,21 +319,48 @@ const Header: React.FC<HeaderProps> = ({ currentUser }) => {
               <>
                 <button
                   onClick={() => {
-                    goDashboard();
+                    goCreateUser();
                     setIsMenuOpen(false);
                   }}
-                  className={`text-left py-1 ${isActive("/dashboard")}`}
+                  className={`text-left py-1 ${isActive("/mail")}`}
                 >
                   Дэшборд
                 </button>
                 <button
                   onClick={() => {
-                    goCreateUser2();
+                    goChatBot();
                     setIsMenuOpen(false);
                   }}
-                  className={`text-left py-1 ${isActive("/mail")}`}
+                  className={`text-left py-1 ${isActive("/dock")}`}
                 >
-                  Создать аккаунт сотрудника
+                  Чат-бот
+                </button>
+                <button
+                  onClick={() => {
+                    goDiary();
+                    setIsMenuOpen(false);
+                  }}
+                  className={`text-left py-1 ${isActive("/dashboard")}`}
+                >
+                  Дневник
+                </button>
+                <button
+                  onClick={() => {
+                    goRecs();
+                    setIsMenuOpen(false);
+                  }}
+                  className={`text-left py-1 ${isActive("/notifications")}`}
+                >
+                  Рекомендации
+                </button>
+                <button
+                  onClick={() => {
+                    goTest();
+                    setIsMenuOpen(false);
+                  }}
+                  className={`text-left py-1 ${isActive("/test")}`}
+                >
+                  Опрос
                 </button>
               </>
             )}
@@ -272,7 +368,7 @@ const Header: React.FC<HeaderProps> = ({ currentUser }) => {
         </div>
       )}
 
-      {/* Модалка профиля (как была, только без лишних украшательств) */}
+      {/* Модалка профиля */}
       {isProfileOpen && (
         <div
           className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-3"

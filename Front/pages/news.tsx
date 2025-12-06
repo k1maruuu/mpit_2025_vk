@@ -6,6 +6,7 @@ import axios from "axios";
 import api from "../lib/api";
 import { isAuthenticated } from "../lib/auth";
 import { User } from "../lib/types";
+import Image from "next/image";
 
 interface DashboardProps {
   currentUser: User;
@@ -60,8 +61,10 @@ const Dashboard: React.FC<DashboardProps> = ({ currentUser }) => {
   const [testError, setTestError] = useState<string | null>(null);
 
   const burnoutScoreFromUser = currentUser.burn_out_score ?? null;
+
+  // сначала берём общий балл из последнего теста, потом — из профиля
   const effectiveBurnoutScore =
-    burnoutScoreFromUser ?? (lastTest ? lastTest.total_score : null);
+    lastTest?.total_score ?? burnoutScoreFromUser;
 
   let burnoutLabel = "Нет данных";
   let burnoutColor = "text-gray-700";
@@ -239,13 +242,16 @@ const Dashboard: React.FC<DashboardProps> = ({ currentUser }) => {
     setYear(newYear);
   };
 
+  const firstName =
+    currentUser.full_name?.trim().split(/\s+/)[0] || "коллега";
+
   // ---------- РЕНДЕР ----------
   return (
-    <div className="relative min-h-screen bg-[#F4F6FB]">
+    <div className="relative min-h-[screen-98px] bg-[#F4F6FB]">
       {/* фоновые круги как на лендинге */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-32 -right-24 h-72 w-72 rounded-full bg-[#005EFF]/6 blur-3xl" />
-        <div className="absolute bottom-[-80px] left-[-40px] h-72 w-72 rounded-full bg-[#00B33C]/6 blur-3xl" />
+        <div className="absolute -top-32 -right-24 h-72 rounded-full bg-[#005EFF]/6 blur-3xl" />
+        <div className="absolute bottom-[-80px] left-[-40px] h-72 rounded-full bg-[#00B33C]/6 blur-3xl" />
       </div>
 
       <main className="relative z-10 max-w-6xl mx-auto px-4 lg:px-6 pt-10 pb-16 space-y-8">
@@ -257,7 +263,7 @@ const Dashboard: React.FC<DashboardProps> = ({ currentUser }) => {
               Панель благополучия сотрудника
             </div>
             <h1 className="mt-3 text-2xl md:text-[26px] font-semibold text-[#111827]">
-              Привет, {currentUser.full_name?.split(" ")[0] || "коллега"} 👋
+              Привет, {firstName} 👋
             </h1>
             <p className="mt-1.5 text-sm text-[#6B7280] max-w-xl">
               Здесь собраны ваши показатели выгорания, дневник самочувствия и
@@ -283,9 +289,12 @@ const Dashboard: React.FC<DashboardProps> = ({ currentUser }) => {
               <h2 className="text-[15px] font-semibold text-[#111827]">
                 Уровень выгорания
               </h2>
+
               {effectiveBurnoutScore !== null && (
                 <span
-                  className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-[11px] font-medium bg-[#F3F4FF] text-[#111827]`}
+                  className={
+                    "inline-flex items-center gap-1 rounded-full px-3 py-1 text-[11px] font-medium bg-[#F3F4FF] text-[#111827]"
+                  }
                 >
                   <span
                     className={`h-2 w-2 rounded-full ${
@@ -305,10 +314,12 @@ const Dashboard: React.FC<DashboardProps> = ({ currentUser }) => {
 
             <div className="flex-1 flex flex-col justify-between">
               <div className="h-40 rounded-2xl relative overflow-hidden bg-gradient-to-tr from-[#E0F2FE] via-[#E5ECFF] to-[#FFE4EC]">
-                <img
+                <Image
                   src="/bg1.png"
                   alt="Background"
-                  className="absolute inset-0 w-full h-full object-cover opacity-70"
+                  fill
+                  className="object-cover opacity-70"
+                  priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0" />
               </div>
@@ -502,11 +513,7 @@ const Dashboard: React.FC<DashboardProps> = ({ currentUser }) => {
                     <span className="font-medium">Физическое состояние</span>
                     <span className="text-xs text-gray-500">
                       {lastTest.physical_score} баллов (
-                      {getDomainLevel(
-                        "physical",
-                        lastTest.physical_score
-                      )}
-                      )
+                      {getDomainLevel("physical", lastTest.physical_score)})
                     </span>
                   </div>
                   <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
@@ -515,9 +522,7 @@ const Dashboard: React.FC<DashboardProps> = ({ currentUser }) => {
                       style={{
                         width: `${Math.min(
                           100,
-                          Math.round(
-                            (lastTest.physical_score / 16) * 100
-                          )
+                          Math.round((lastTest.physical_score / 16) * 100)
                         )}%`,
                       }}
                     />
@@ -528,11 +533,7 @@ const Dashboard: React.FC<DashboardProps> = ({ currentUser }) => {
                     <span className="font-medium">Эмоциональное состояние</span>
                     <span className="text-xs text-gray-500">
                       {lastTest.emotional_score} баллов (
-                      {getDomainLevel(
-                        "emotional",
-                        lastTest.emotional_score
-                      )}
-                      )
+                      {getDomainLevel("emotional", lastTest.emotional_score)})
                     </span>
                   </div>
                   <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
@@ -541,9 +542,7 @@ const Dashboard: React.FC<DashboardProps> = ({ currentUser }) => {
                       style={{
                         width: `${Math.min(
                           100,
-                          Math.round(
-                            (lastTest.emotional_score / 24) * 100
-                          )
+                          Math.round((lastTest.emotional_score / 24) * 100)
                         )}%`,
                       }}
                     />
@@ -554,11 +553,7 @@ const Dashboard: React.FC<DashboardProps> = ({ currentUser }) => {
                     <span className="font-medium">Когнитивное состояние</span>
                     <span className="text-xs text-gray-500">
                       {lastTest.cognitive_score} баллов (
-                      {getDomainLevel(
-                        "cognitive",
-                        lastTest.cognitive_score
-                      )}
-                      )
+                      {getDomainLevel("cognitive", lastTest.cognitive_score)})
                     </span>
                   </div>
                   <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
@@ -567,9 +562,7 @@ const Dashboard: React.FC<DashboardProps> = ({ currentUser }) => {
                       style={{
                         width: `${Math.min(
                           100,
-                          Math.round(
-                            (lastTest.cognitive_score / 24) * 100
-                          )
+                          Math.round((lastTest.cognitive_score / 24) * 100)
                         )}%`,
                       }}
                     />

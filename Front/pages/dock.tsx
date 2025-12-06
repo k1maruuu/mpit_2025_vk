@@ -30,7 +30,7 @@ interface ChatMessage {
 
 // Базовый URL для fetch (для стриминга)
 const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+  process.env.NEXT_PUBLIC_API_URL ?? "http://111.88.142.33:8000";
 
 export default function Dock({ currentUser }: DockProps) {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
@@ -42,6 +42,9 @@ export default function Dock({ currentUser }: DockProps) {
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const firstName =
+    currentUser.full_name?.trim().split(/\s+/)[0] || "вы";
 
   // ---- Загрузка списка сессий ----
   const fetchSessions = async () => {
@@ -231,8 +234,9 @@ export default function Dock({ currentUser }: DockProps) {
               Ассистент по выгоранию
             </h1>
             <p className="mt-1 text-sm text-[#6B7280] max-w-2xl">
-              Задайте вопрос о своём состоянии, нагрузке или рабочей ситуации —
-              ассистент подскажет, как снизить уровень стресса и выгорания.
+              Привет, {firstName}! Опишите своё состояние, нагрузку или рабочую
+              ситуацию — ассистент подскажет, как снизить уровень стресса и
+              выгорания.
             </p>
           </div>
           <button
@@ -298,6 +302,11 @@ export default function Dock({ currentUser }: DockProps) {
                 <h2 className="text-sm font-semibold text-[#111827]">
                   Диалог с ассистентом
                 </h2>
+                <p className="text-[11px] text-gray-400 mt-0.5">
+                  {currentSession
+                    ? currentSession.title || `Чат #${currentSession.id}`
+                    : "Новый диалог"}
+                </p>
               </div>
             </div>
 

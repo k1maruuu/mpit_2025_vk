@@ -226,15 +226,103 @@ const DashboardDiary: NextPage<DiaryPageProps> = ({ currentUser }) => {
     }
   };
 
+  const firstName =
+    currentUser.full_name?.trim().split(/\s+/)[0] || "вы";
+
   // ----------------- Рендер -----------------
   return (
-    <div className="min-h-[calc(100vh-96px)] bg-[#F5F7F9] flex justify-center items-start pt-16 px-4">
-      <div className="w-full max-w-6xl space-y-6">
+    <div className="min-h-[calc(100vh-96px)] bg-[#F5F7F9] flex justify-center items-start pt-14 sm:pt-16 px-3 sm:px-4">
+      <div className="w-full max-w-6xl space-y-6 sm:space-y-7">
+        {/* Верхний небольшой заголовок */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-1">
+          <div>
+            <p className="text-[11px] uppercase tracking-wide text-[#005EFF]">
+              дневник самочувствия
+            </p>
+            <h1 className="text-xl sm:text-2xl font-semibold text-[#111827]">
+              Замечайте своё состояние каждый день
+            </h1>
+            <p className="text-xs text-gray-500 mt-1">
+              Привет, {firstName} — дневник помогает лучше понимать своё
+              состояние.
+            </p>
+          </div>
+          <p className="text-[11px] sm:text-xs text-gray-500 max-w-xs sm:text-right">
+            Короткая запись 1 раз в день помогает отслеживать выгорание и
+            замечать небольшие изменения в самочувствии.
+          </p>
+        </div>
 
         {/* Верхняя строка: календарь + дневник + достижения */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr_1fr] gap-6">
-          {/* Календарь */}
-          <div className="bg-white rounded-[24px] shadow-sm p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr_1fr] gap-5 sm:gap-6">
+          {/* Дневник самочувствия — на мобилке первый */}
+          <div className="bg-white rounded-[24px] shadow-sm p-4 sm:p-6 flex flex-col order-1 lg:order-2">
+            <h2 className="text-lg font-semibold mb-3 text-center">
+              Дневник самочувствия
+            </h2>
+
+            <h1 className="text-xl sm:text-2xl font-bold text-center mb-3">
+              Как прошёл ваш день?
+            </h1>
+            <p className="text-sm text-gray-500 text-center mb-5">
+              Выберите эмоцию, которая лучше всего отражает ваше текущее
+              состояние.
+            </p>
+
+            <div className="flex justify-center gap-3 sm:gap-5 mb-5">
+              {(Object.keys(EMOJI) as unknown as Mood[]).map((mood) => {
+                const selected = selectedMood === mood;
+                return (
+                  <button
+                    key={mood}
+                    type="button"
+                    onClick={() => setSelectedMood(mood)}
+                    className={[
+                      "w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-xl sm:text-2xl transition",
+                      "bg-gray-50 hover:bg-gray-100",
+                      "border",
+                      selected
+                        ? "border-[#005EFF] ring-2 ring-[#005EFF]/40"
+                        : "border-gray-200",
+                    ].join(" ")}
+                  >
+                    {EMOJI[mood]}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="mb-5">
+              <textarea
+                className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-3 sm:px-4 py-2.5 sm:py-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#005EFF]/35"
+                rows={4}
+                placeholder="Что повлияло на ваше самочувствие?"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
+            </div>
+
+            {error && (
+              <p className="text-sm text-red-500 mb-2 text-center">{error}</p>
+            )}
+            {success && (
+              <p className="text-sm text-green-600 mb-2 text-center">
+                {success}
+              </p>
+            )}
+
+            <button
+              type="button"
+              disabled={!selectedMood || saving}
+              onClick={handleSave}
+              className="mt-auto w-full rounded-full bg-[#005EFF] hover:bg-[#0046C4] disabled:bg-gray-300 text-white py-2.5 sm:py-3 text-sm font-semibold transition"
+            >
+              {saving ? "Сохраняем..." : "Добавить запись"}
+            </button>
+          </div>
+
+          {/* Календарь — на мобилке второй */}
+          <div className="bg-white rounded-[24px] shadow-sm p-4 sm:p-6 order-2 lg:order-1">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-lg font-semibold">Календарь</h2>
               <div className="flex items-center gap-2 text-xs text-gray-500">
@@ -299,7 +387,7 @@ const DashboardDiary: NextPage<DiaryPageProps> = ({ currentUser }) => {
                   })}
                 </div>
 
-                <div className="mt-4 flex gap-2 text-[11px]">
+                <div className="mt-4 flex flex-wrap gap-2 text-[11px]">
                   <span className="px-3 py-1 rounded-md bg-green-200 text-green-800 font-semibold">
                     {greenPct}%
                   </span>
@@ -317,74 +405,8 @@ const DashboardDiary: NextPage<DiaryPageProps> = ({ currentUser }) => {
             )}
           </div>
 
-          {/* Дневник самочувствия (центр) */}
-          <div className="bg-white rounded-[24px] shadow-sm p-6 flex flex-col">
-            <h2 className="text-lg font-semibold mb-4 text-center">
-              Дневник самочувствия
-            </h2>
-
-            <h1 className="text-2xl font-bold text-center mb-3">
-              Как прошёл ваш день?
-            </h1>
-            <p className="text-sm text-gray-500 text-center mb-6">
-              Выберите эмоцию, которая лучше всего отражает ваше текущее
-              состояние.
-            </p>
-
-            <div className="flex justify-center gap-5 mb-6">
-              {(Object.keys(EMOJI) as unknown as Mood[]).map((mood) => {
-                const selected = selectedMood === mood;
-                return (
-                  <button
-                    key={mood}
-                    type="button"
-                    onClick={() => setSelectedMood(mood)}
-                    className={[
-                      "w-12 h-12 rounded-full flex items-center justify-center text-2xl transition",
-                      "bg-gray-50 hover:bg-gray-100",
-                      "border",
-                      selected
-                        ? "border-[#00B33C] ring-2 ring-[#00B33C]/40"
-                        : "border-gray-200",
-                    ].join(" ")}
-                  >
-                    {EMOJI[mood]}
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="mb-6">
-              <textarea
-                className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#00B33C]/40"
-                rows={4}
-                placeholder="Что повлияло на ваше самочувствие?"
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-              />
-            </div>
-
-            {error && (
-              <p className="text-sm text-red-500 mb-2 text-center">{error}</p>
-            )}
-            {success && (
-              <p className="text-sm text-green-600 mb-2 text-center">
-                {success}
-              </p>
-            )}
-
-            <button
-              type="button"
-              disabled={!selectedMood || saving}
-              onClick={handleSave}
-              className="mt-auto w-full rounded-full bg-[#00B33C] hover:bg-[#00A334] disabled:bg-gray-300 text-white py-3 text-sm font-semibold transition"
-            >
-              {saving ? "Сохраняем..." : "Добавить запись"}
-            </button>
-          </div>
-
-          {/* Достижения (справа) */}
-          <div className="bg-white rounded-[24px] shadow-sm p-6 flex flex-col">
+          {/* Достижения (справа, на мобилке третьи) */}
+          <div className="bg-white rounded-[24px] shadow-sm p-4 sm:p-6 flex flex-col order-3">
             <h2 className="text-lg font-semibold mb-4">Достижения</h2>
 
             {statsLoading && (
@@ -428,8 +450,8 @@ const DashboardDiary: NextPage<DiaryPageProps> = ({ currentUser }) => {
         </div>
 
         {/* Нижняя строка: стрик */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr_1fr] gap-6">
-          <div className="bg-white rounded-[24px] shadow-sm p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr_1fr] gap-5 sm:gap-6">
+          <div className="bg-white rounded-[24px] shadow-sm p-4 sm:p-6">
             <h2 className="text-lg font-semibold mb-2">Стрик</h2>
             {stats ? (
               <p className="text-sm text-gray-800">
@@ -446,8 +468,9 @@ const DashboardDiary: NextPage<DiaryPageProps> = ({ currentUser }) => {
             )}
           </div>
 
-          <div className="bg-transparent" />
-          <div className="bg-transparent" />
+          {/* заглушки только на десктопе для выравнивания сетки */}
+          <div className="hidden lg:block bg-transparent" />
+          <div className="hidden lg:block bg-transparent" />
         </div>
       </div>
     </div>
